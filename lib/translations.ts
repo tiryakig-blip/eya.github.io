@@ -8,6 +8,7 @@ export const translations = {
       documents: 'Yayınlar',
       gallery: 'Görsel Arşiv',
       library: 'Kitaplık',
+      videos: 'Videolar',
       about: 'Hakkında',
     },
     hero: {
@@ -164,6 +165,7 @@ export const translations = {
       documents: 'Documents',
       gallery: 'Gallery',
       library: 'Library',
+      videos: 'Videos',
       about: 'About',
     },
     hero: {
