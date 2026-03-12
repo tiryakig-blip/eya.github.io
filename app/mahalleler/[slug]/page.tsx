@@ -3,8 +3,9 @@
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
-import { ArrowLeft, ChevronDown, ChevronRight, MapPin, Camera, X, Folder } from 'lucide-react'
+import { ArrowLeft, ChevronDown, ChevronRight, MapPin, Camera, X, Folder, Lock, LogOut } from 'lucide-react'
 import { useI18n } from '@/lib/i18n'
+import { useAuth } from '@/lib/useAuth'
 import { MAHALLE_LIST, toSlug } from '@/lib/mockData'
 
 // Drive klasör ID'leri — mahalle slug → Drive folder ID
@@ -19,6 +20,7 @@ interface DrivePhoto { id: string; name: string; url: string; urlFull: string }
 export default function MahallePage() {
   const { slug } = useParams<{ slug: string }>()
   const { locale } = useI18n()
+  const { isAdmin, logout } = useAuth()
   const mahalleName = MAHALLE_LIST.find(m => toSlug(m) === slug) ?? slug
   const driveFolderId = DRIVE_FOLDERS[slug]
 
@@ -94,8 +96,11 @@ export default function MahallePage() {
           <img
             src={lightbox.photos[lightbox.index].urlFull}
             alt={lightbox.photos[lightbox.index].name}
-            className="max-w-[90vw] max-h-[85vh] object-contain rounded shadow-2xl"
+            className="max-w-[90vw] max-h-[85vh] object-contain rounded shadow-2xl select-none"
             onClick={e => e.stopPropagation()}
+            onContextMenu={e => e.preventDefault()}
+            onDragStart={e => e.preventDefault()}
+            draggable={false}
           />
           <div className="absolute bottom-4 text-center">
             <span className="text-white/80 text-sm">{lightbox.photos[lightbox.index].name}</span>
@@ -112,13 +117,32 @@ export default function MahallePage() {
             <ArrowLeft size={12} />
             {locale === 'tr' ? 'Tüm Mahalleler' : 'All Neighborhoods'}
           </Link>
-          <div className="flex items-center gap-3 mb-2">
-            <MapPin size={20} className="text-gold" />
-            <h1 className="font-serif text-white text-3xl font-bold">{mahalleName}</h1>
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <MapPin size={20} className="text-gold" />
+                <h1 className="font-serif text-white text-3xl font-bold">{mahalleName}</h1>
+              </div>
+              <p className="text-sand/50 text-sm ml-8">
+                {locale === 'tr' ? 'Elmalı İlçesi' : 'Elmalı District'}
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              {isAdmin ? (
+                <>
+                  <span className="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded-full">{locale === 'tr' ? 'Yetkili' : 'Admin'}</span>
+                  <button onClick={logout} className="text-sand/40 hover:text-white transition-colors" title={locale === 'tr' ? 'Çıkış' : 'Logout'}>
+                    <LogOut size={14} />
+                  </button>
+                </>
+              ) : (
+                <Link href="/giris" className="flex items-center gap-1 text-sand/40 hover:text-gold text-xs transition-colors">
+                  <Lock size={12} />
+                  {locale === 'tr' ? 'Giriş' : 'Login'}
+                </Link>
+              )}
+            </div>
           </div>
-          <p className="text-sand/50 text-sm ml-8">
-            {locale === 'tr' ? 'Elmalı İlçesi' : 'Elmalı District'}
-          </p>
         </div>
       </div>
 
@@ -262,6 +286,7 @@ export default function MahallePage() {
 }
 
 function PhotoGrid({ photos, onOpen }: { photos: DrivePhoto[]; onOpen: (index: number) => void }) {
+  const block = (e: React.MouseEvent | React.DragEvent) => e.preventDefault()
   return (
     <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
       {photos.map((p, i) => (
@@ -269,8 +294,11 @@ function PhotoGrid({ photos, onOpen }: { photos: DrivePhoto[]; onOpen: (index: n
           <img
             src={p.url}
             alt={p.name}
-            className="w-full h-full object-cover rounded border border-sand/40 group-hover:border-gold/60 transition-colors"
+            className="w-full h-full object-cover rounded border border-sand/40 group-hover:border-gold/60 transition-colors select-none pointer-events-auto"
             loading="lazy"
+            onContextMenu={block}
+            onDragStart={block}
+            draggable={false}
           />
         </div>
       ))}

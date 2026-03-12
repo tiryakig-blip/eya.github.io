@@ -18,13 +18,16 @@ async function listFolder(folderId: string): Promise<DriveFile[]> {
 }
 
 /** GET /api/drive?folderId=xxx
- *  → { folders: [{id, name}], photos: [{id, name, url}] }
+ *  Yetkili kullanıcı: yüksek çözünürlük
+ *  Ziyaretçi: düşük çözünürlük
  */
 export async function GET(req: NextRequest) {
   const folderId = req.nextUrl.searchParams.get('folderId')
   if (!folderId || !API_KEY) {
     return NextResponse.json({ folders: [], photos: [] })
   }
+
+  const isAdmin = req.cookies.get('eya_auth')?.value === 'admin'
 
   const files = await listFolder(folderId)
 
@@ -38,9 +41,13 @@ export async function GET(req: NextRequest) {
     .map(f => ({
       id: f.id,
       name: f.name,
-      url: `https://drive.google.com/thumbnail?id=${f.id}&sz=w800`,
-      urlFull: `https://drive.google.com/thumbnail?id=${f.id}&sz=w1920`,
+      url: isAdmin
+        ? `https://drive.google.com/thumbnail?id=${f.id}&sz=w800`
+        : `https://drive.google.com/thumbnail?id=${f.id}&sz=w400`,
+      urlFull: isAdmin
+        ? `https://drive.google.com/thumbnail?id=${f.id}&sz=w1920`
+        : `https://drive.google.com/thumbnail?id=${f.id}&sz=w800`,
     }))
 
-  return NextResponse.json({ folders, photos })
+  return NextResponse.json({ folders, photos, isAdmin })
 }
