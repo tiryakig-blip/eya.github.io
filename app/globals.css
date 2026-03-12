@@ -1,0 +1,135 @@
+/* Leaflet CSS — must come before @tailwind directives */
+@import 'leaflet/dist/leaflet.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gold:      #B8860B;
+  --terra:     #C2714F;
+  --sand:      #E8D5B0;
+  --obsidian:  #1C1917;
+  --parchment: #FAF8F5;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--parchment);
+  color: var(--obsidian);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* ── Scrollbar ─────────────────────────────────── */
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: #f1ece4; }
+::-webkit-scrollbar-thumb  { background: #c9a96e; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #b8860b; }
+
+/* ── Typography ────────────────────────────────── */
+.font-serif { font-family: Georgia, Cambria, 'Times New Roman', serif; }
+
+/* ── Hero gradient overlay ─────────────────────── */
+.hero-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(28, 25, 23, 0.62) 0%,
+    rgba(28, 25, 23, 0.40) 50%,
+    rgba(28, 25, 23, 0.80) 100%
+  );
+}
+
+/* ── Gold shimmer button ───────────────────────── */
+.btn-gold {
+  @apply relative overflow-hidden bg-gold text-white font-semibold px-6 py-3 rounded-sm transition-all duration-300;
+}
+.btn-gold::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%);
+  background-size: 200% 100%;
+  animation: shimmer 2.4s infinite;
+}
+.btn-gold:hover { @apply bg-gold-dark shadow-lg scale-[1.02]; }
+
+.btn-outline {
+  @apply border border-white/60 text-white font-semibold px-6 py-3 rounded-sm
+         backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white;
+}
+
+/* ── Card hover ────────────────────────────────── */
+.card-hover {
+  @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
+}
+
+/* ── Page section ──────────────────────────────── */
+.page-section { @apply py-16 px-4 max-w-7xl mx-auto; }
+
+/* ── Active nav link ───────────────────────────── */
+.nav-link {
+  @apply relative text-sand/80 hover:text-white transition-colors duration-200 text-sm tracking-wide;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 1px;
+  background: var(--gold);
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after,
+.nav-link.active::after { width: 100%; }
+.nav-link.active { @apply text-gold; }
+
+/* ── Leaflet custom markers ────────────────────── */
+.custom-marker {
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+  font-weight: bold;
+  font-size: 11px;
+  color: white;
+}
+
+/* ── Animations ────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-up { animation: fadeUp 0.65s ease-out forwards; }
+.animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+
+.delay-100 { animation-delay: 0.10s; }
+.delay-200 { animation-delay: 0.20s; }
+.delay-300 { animation-delay: 0.30s; }
+.delay-400 { animation-delay: 0.40s; }
+.delay-500 { animation-delay: 0.50s; }
+
+/* ── Lightbox backdrop ─────────────────────────── */
+.lightbox-backdrop {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ── Module card gradient ──────────────────────── */
+.module-card-gradient {
+  background: linear-gradient(135deg, rgba(184,134,11,0.08) 0%, transparent 60%);
+}
+
+/* ── Stats counter ─────────────────────────────── */
+.stat-number {
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+}
