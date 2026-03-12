@@ -214,11 +214,35 @@ export function getMahalle(slug: string): Mahalle {
     description: `${name} Mahallesi, Elmalı ilçesine bağlı bir yerleşim birimidir.`,
     descriptionEn: `${name} is a neighborhood in the Elmalı district.`,
     categories: [
-      { title: 'Arkeoloji', titleEn: 'Archaeology', icon: '🏛', items: [] },
-      { title: 'Halk Mimariliği', titleEn: 'Folk Architecture', icon: '🏘', items: [] },
-      { title: 'Defin Alanları', titleEn: 'Burial Areas', icon: '🪦', items: [] },
-      { title: 'Çeşmeler', titleEn: 'Fountains', icon: '⛲', items: [] },
-      { title: 'Sözlü Kültür', titleEn: 'Oral Culture', icon: '🗣', items: [] },
+      {
+        title: 'Arkeoloji', titleEn: 'Archaeology', icon: '🏛',
+        items: [
+          { title: 'Antik Yollar', titleEn: 'Ancient Roads', photoDir: `${slug}/arkeoloji/antik-yollar` },
+          { title: 'Antik Yerleşimler', titleEn: 'Ancient Settlements', photoDir: `${slug}/arkeoloji/antik-yerlesimler` },
+          { title: 'Nekropoller', titleEn: 'Necropolises', photoDir: `${slug}/arkeoloji/nekropoller` },
+          { title: 'Kilise / Şapel', titleEn: 'Church / Chapel', photoDir: `${slug}/arkeoloji/kilise-sapel` },
+          { title: 'Yazıt', titleEn: 'Inscriptions', photoDir: `${slug}/arkeoloji/yazit` },
+          { title: 'Antik Tarım Terasları', titleEn: 'Ancient Agricultural Terraces', photoDir: `${slug}/arkeoloji/antik-tarim-teraslari` },
+          { title: 'İşlikler', titleEn: 'Workshops', photoDir: `${slug}/arkeoloji/islikler` },
+          { title: 'Önemli Buluntular', titleEn: 'Important Findings', photoDir: `${slug}/arkeoloji/onemli-buluntular` },
+        ],
+      },
+      {
+        title: 'Halk Mimariliği', titleEn: 'Folk Architecture', icon: '🏘',
+        items: [
+          { title: 'Ahşap Tahıl Ambarları', titleEn: 'Wooden Granaries', photoDir: `${slug}/halk-mimariligi/ahsap-tahil-ambarlari` },
+          { title: 'Açık Hava İbadet Alanları', titleEn: 'Open Air Worship Areas', photoDir: `${slug}/halk-mimariligi/acik-hava-ibadet-alanlari` },
+        ],
+      },
+      {
+        title: 'Defin Alanları', titleEn: 'Burial Areas', icon: '🪦',
+        items: [
+          { title: 'Köy Mezarlığı', titleEn: 'Village Cemetery', photoDir: `${slug}/defin-alanlari/koy-mezarligi` },
+          { title: 'Yaran Mezarlığı', titleEn: 'Yaran Cemetery', photoDir: `${slug}/defin-alanlari/yaran-mezarligi` },
+        ],
+      },
+      { title: 'Çeşmeler', titleEn: 'Fountains', icon: '⛲', items: [], photoDir: `${slug}/cesmeler` },
+      { title: 'Sözlü Kültür', titleEn: 'Oral Culture', icon: '🗣', items: [], photoDir: `${slug}/sozlu-kultur` },
     ],
   }
 }
